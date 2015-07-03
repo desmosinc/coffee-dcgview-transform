@@ -1,8 +1,12 @@
 {
   "name": "dcgview-cjsx-transform",
   "description": "DCGView CJSX support (based on coffee-react-transform)",
+  "repository": {
+      "type": "git",
+      "url": "git://github.com/desmosinc/dcgview-cjsx-transform.git"
+  },
   "author": "Desmos Inc",
-  "version": "3.2.0",
+  "version": "0.1.0",
   "licenses": [
     {
       "type": "MIT",
