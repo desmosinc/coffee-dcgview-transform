@@ -154,7 +154,7 @@ module.exports = class Parser
 
     return 0 unless match = TAG_ATTRIBUTES.exec @chunk
     [ input, attrName, doubleQuotedVal,
-      singleQuotedVal, cjsxEscVal, bareVal,
+      singleQuotedVal, cjsxEscVal, bareNumericVal, bareBooleanVal, invalidVal
       spreadAttr, whitespace ] = match
 
     if attrName
@@ -175,12 +175,21 @@ module.exports = class Parser
         @addLeafNodeToActiveBranch ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
         # on next iteration of parse loop, '{' will trigger CJSX_ESC state
         return input.indexOf('{') # consume up to start of cjsx escape
-      else if bareVal # value
+      else if bareNumericVal # numeric value
         @addLeafNodeToActiveBranch ParseTreeBranchNode($.CJSX_ATTR_PAIR, null, [
           ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
-          ParseTreeLeafNode($.CJSX_ATTR_VAL, "@const(#{bareVal})")
+          ParseTreeLeafNode($.CJSX_ATTR_VAL, "@const(#{bareNumericVal})")
         ])
         return input.length
+      else if bareBooleanVal # numeric value
+        @addLeafNodeToActiveBranch ParseTreeBranchNode($.CJSX_ATTR_PAIR, null, [
+          ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
+          ParseTreeLeafNode($.CJSX_ATTR_VAL, "@const(#{bareBooleanVal})")
+        ])
+        return input.length
+      else if invalidVal # non-whitelisted bare value
+        throwSyntaxError "Invalid attribute value: [#{invalidVal}] - bare attr values must be literal numbers or booleans",
+          first_line: @chunkLine, first_column: @chunkColumn #TODO - inaccurate position
       else # valueless attr
         @addLeafNodeToActiveBranch ParseTreeBranchNode($.CJSX_ATTR_PAIR, null, [
           ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
@@ -371,7 +380,7 @@ OPENING_TAG = /// ^
                     (?:"[^"]*") # double quoted value
                   | (?:'[^']*') # single quoted value
                   | (?:{[\s\S]*?}) # cjsx escaped expression
-                  | [^>\s]+ # bare value
+                  | [^>\s]+ # other attribute value
                 ) 
               )
             )
@@ -393,8 +402,11 @@ CLOSING_TAG = /^<\/(@?[-A-Za-z0-9_\.]+)[^>]*>/
 # [2] "val" double quoted
 # [3] 'val' single quoted
 # [4] {val} {cs escaped}
-# [5] val bare
-# [6] whitespace
+# [5] bare numeric val
+# [6] bare boolean val
+# [6] invalid bare val
+# [7] spread attributes
+# [8] whitespace
 TAG_ATTRIBUTES = ///
   (?:
     ([-A-Za-z0-9_]+) # attr name (captured)
@@ -404,7 +416,9 @@ TAG_ATTRIBUTES = ///
           (?: " ( (?: \\. | [^"] )* ) " ) # double quoted value (captured)
         | (?: ' ( (?: \\. | [^'] )* ) ' ) # single quoted value (captured)
         | (?: { ( (?: \\. | [\s\S] )* ) } ) # cjsx escaped expression (captured)
-        | ( [^>\s]+ ) # bare value (captured)
+        | (?: (\-? [0-9]+ \.? [0-9]* ) ) # bare value (numeric) (captured)
+        | (?: ( true | false ) ) # bare value (boolean) (captured)
+        | ( [^>\s]+ ) # invalid bare value (captured)
       )
     )?
   )

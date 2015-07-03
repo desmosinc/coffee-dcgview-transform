@@ -43,6 +43,14 @@ x = @createElement("table", {"width": @const(100)})
 ##end
 
 ##desc
+boolean bare attribute
+##input
+x = <table width=true />
+##expected
+x = @createElement("table", {"width": @const(true)})
+##end
+
+##desc
 numeric escaped coffeescript attribute
 ##input
 x = <table width={100} />
@@ -250,12 +258,12 @@ lots of attributes
 ##input
 
 <Person eyes=2 friends={getFriends()} popular = "yes"
-active={ if isActive() then 'active' else 'inactive' } data-attr='works' checked check=me_out
+active={ if isActive() then 'active' else 'inactive' } data-attr='works' checked check=1
 />
 ##expected
 
 @createElement(Person, {"eyes": @const(2), "friends": (getFriends()), "popular": @const("yes"),  \
-"active": ( if isActive() then 'active' else 'inactive' ), "data-attr": @const('works'), "checked": true, "check": @const(me_out)
+"active": ( if isActive() then 'active' else 'inactive' ), "data-attr": @const('works'), "checked": true, "check": @const(1)
 })
 ##end
 
