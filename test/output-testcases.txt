@@ -353,7 +353,7 @@ heregex
 test = /432/gm # this is a regex
 6 /432/gm # this is division
 <Tag>
-{test = /<Tag>/} <--this is a regex containing something which looks like a tag
+{test = /<Tag>/} (this is a regex containing something which looks like a tag)
 </Tag>
 <Person />
 REGEX = /// ^
@@ -376,7 +376,7 @@ REGEX = /// ^
 test = /432/gm # this is a regex
 6 /432/gm # this is division
 @createElement(Tag, null,
-(test = /<Tag>/), """ \x3C--this is a regex containing something which looks like a tag
+(test = /<Tag>/), """ (this is a regex containing something which looks like a tag)
 """)
 @createElement(Person, null)
 REGEX = /// ^
@@ -514,9 +514,9 @@ string within cjsx is ignored by parser and escaped
 ##desc
 special chars within cjsx are ignored by parser and escaped
 ##input
-<Person> a,/';][' a\''@$%^&˚¬∑˜˚∆å∂¬˚*()*&^%$>><<<< '"''"'''\'\'m' i </Person>
+<Person> a,/';][' a\''@$%^&˚¬∑˜˚∆å∂¬˚*()*&^%$ '"''"'''\'\'m' i </Person>
 ##expected
-@createElement(Person, null, " a,\x2F\';][\' a\\\'\'@$%^\&\u02da\u00ac\u2211\u02dc\u02da\u2206\u00e5\u2202\u00ac\u02da*()*\&^%$\x3E\x3E\x3C\x3C\x3C\x3C \'\"\'\'\"\'\'\'\\\'\\\'m\' i ")
+@createElement(Person, null, " a,\x2F\';][\' a\\\'\'@$%^\&\u02da\u00ac\u2211\u02dc\u02da\u2206\u00e5\u2202\u00ac\u02da*()*\&^%$ \'\"\'\'\"\'\'\'\\\'\\\'m\' i ")
 ##end
 
 ##desc

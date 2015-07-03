@@ -254,7 +254,15 @@ module.exports = class Parser
       @addLeafNodeToActiveBranch ParseTreeLeafNode $.CJSX_TEXT, '' # init value as string
 
     # newestNode is (now) $.CJSX_TEXT
-    @newestNode().value += @chunk.charAt 0
+    nextChar = @chunk.charAt 0
+    if nextChar in ['>', '<']
+      context = @chunk[..20]
+      context = context.split('\n')[0]
+      throwSyntaxError """Unescaped angle brackets not allowed in cjsx test.
+      This probably means unmatched or missing closing tags near #{context}
+      """, first_line: @chunkLine, first_column: @chunkColumn
+    else
+      @newestNode().value += nextChar
 
     return 1
 
