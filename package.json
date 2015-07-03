@@ -1,19 +1,12 @@
 {
-  "name": "coffee-react-transform",
-  "description": "React JSX support for Coffeescript",
-  "keywords": [
-    "coffeescript",
-    "react",
-    "jsx",
-    "cjsx",
-    "coffee-react"
-  ],
-  "author": "James Friend",
+  "name": "dcgview-cjsx-transform",
+  "description": "DCGView CJSX support (based on coffee-react-transform)",
+  "author": "Desmos Inc",
   "version": "3.2.0",
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://raw.github.com/jsdf/coffee-react-transform/master/LICENSE"
+      "url": "https://raw.githubusercontent.com/desmosinc/dcgview-cjsx-transform/master/LICENCE"
     }
   ],
   "scripts": {
@@ -27,12 +20,6 @@
   ],
   "bin": {
     "cjsx-transform": "./bin/cjsx-transform"
-  },
-  "homepage": "https://github.com/jsdf/coffee-react-transform",
-  "bugs": "https://github.com/jsdf/coffee-react-transform/issues",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/jsdf/coffee-react-transform.git"
   },
   "devDependencies": {
     "coffee-script": "^1.9.1",
