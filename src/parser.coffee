@@ -154,20 +154,20 @@ module.exports = class Parser
 
     return 0 unless match = TAG_ATTRIBUTES.exec @chunk
     [ input, attrName, doubleQuotedVal,
-      singleQuotedVal, cjsxEscVal, bareVal, 
+      singleQuotedVal, cjsxEscVal, bareVal,
       spreadAttr, whitespace ] = match
 
     if attrName
       if doubleQuotedVal? # "value"
         @addLeafNodeToActiveBranch ParseTreeBranchNode($.CJSX_ATTR_PAIR, null, [
           ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
-          ParseTreeLeafNode($.CJSX_ATTR_VAL, "\"#{doubleQuotedVal}\"")
+          ParseTreeLeafNode($.CJSX_ATTR_VAL, "@const(\"#{doubleQuotedVal}\")")
         ])
         return input.length
       else if singleQuotedVal? # 'value'
         @addLeafNodeToActiveBranch ParseTreeBranchNode($.CJSX_ATTR_PAIR, null, [
           ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
-          ParseTreeLeafNode($.CJSX_ATTR_VAL, "'#{singleQuotedVal}'")
+          ParseTreeLeafNode($.CJSX_ATTR_VAL, "@const('#{singleQuotedVal}')")
         ])
         return input.length
       else if cjsxEscVal # {value}
@@ -178,7 +178,7 @@ module.exports = class Parser
       else if bareVal # value
         @addLeafNodeToActiveBranch ParseTreeBranchNode($.CJSX_ATTR_PAIR, null, [
           ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
-          ParseTreeLeafNode($.CJSX_ATTR_VAL, bareVal)
+          ParseTreeLeafNode($.CJSX_ATTR_VAL, "@const(#{bareVal})")
         ])
         return input.length
       else # valueless attr

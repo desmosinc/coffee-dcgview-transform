@@ -39,7 +39,7 @@ numeric bare attribute
 ##input
 x = <table width=100 />
 ##expected
-x = @createElement("table", {"width": 100})
+x = @createElement("table", {"width": @const(100)})
 ##end
 
 ##desc
@@ -55,7 +55,7 @@ string attribute
 ##input
 x = <table width="100" />
 ##expected
-x = @createElement("table", {"width": "100"})
+x = @createElement("table", {"width": @const("100")})
 ##end
 
 ##desc
@@ -188,7 +188,7 @@ multiline tag attributes with escaped coffeescript
 someattr='on new line' />
 ##expected
 @createElement(Person, {"name": (if isActive() then 'active' else 'inactive'),  \
-"someattr": 'on new line'})
+"someattr": @const('on new line')})
 ##end
 
 ##desc
@@ -208,7 +208,7 @@ HelloWorld = React.createClass({
   render: () ->
     return (
       @createElement("p", null, """
-        Hello, """, @createElement("input", {"type": "text", "placeholder": "Your name here"}), """!
+        Hello, """, @createElement("input", {"type": @const("text"), "placeholder": @const("Your name here")}), """!
         It is """, (this.props.date.toTimeString())
       )
     );
@@ -233,14 +233,14 @@ React.createClass
 ##expected
 setInterval(() ->
   React.renderComponent(
-    @createElement(HelloWorld, {"date": "{new Date()}"}),
+    @createElement(HelloWorld, {"date": @const("{new Date()}")}),
     document.getElementById('example')
   );
 , 500);
 
 React.createClass
   render: ->
-    return @createElement(Nav, {"color": "blue"},
+    return @createElement(Nav, {"color": @const("blue")},
       (@createElement(Profile, null, "click", (Math.random())) for i in [start...finish])
     )
 ##end
@@ -254,8 +254,8 @@ active={ if isActive() then 'active' else 'inactive' } data-attr='works' checked
 />
 ##expected
 
-@createElement(Person, {"eyes": 2, "friends": (getFriends()), "popular": "yes",  \
-"active": ( if isActive() then 'active' else 'inactive' ), "data-attr": 'works', "checked": true, "check": me_out
+@createElement(Person, {"eyes": @const(2), "friends": (getFriends()), "popular": @const("yes"),  \
+"active": ( if isActive() then 'active' else 'inactive' ), "data-attr": @const('works'), "checked": true, "check": @const(me_out)
 })
 ##end
 
@@ -290,7 +290,7 @@ multiline elements
   @createElement("div", null,
   @createElement("div", null,
   @createElement("div", null,
-    @createElement("article", {"name": ( new Date() ), "number": 203,  \
+    @createElement("article", {"name": ( new Date() ), "number": @const(203),  \
      "range": (getRange())
     }
     )
@@ -556,7 +556,7 @@ self closing tag with spread attribute
 ##input
 <Component a={b} {... x } b="c" />
 ##expected
-@createElement(Component, @__spread({"a": (b)},  x , {"b": "c"}))
+@createElement(Component, @__spread({"a": (b)},  x , {"b": @const("c")}))
 ##end
 
 ##desc
@@ -564,7 +564,7 @@ complex spread attribute
 ##input
 <Component {...x} a={b} {... x } b="c" {...$my_xtraCoolVar123 } />
 ##expected
-@createElement(Component, @__spread({},  x, {"a": (b)},  x , {"b": "c"}, $my_xtraCoolVar123  ))
+@createElement(Component, @__spread({},  x, {"a": (b)},  x , {"b": @const("c")}, $my_xtraCoolVar123  ))
 ##end
 
 ##desc
@@ -575,7 +575,7 @@ multiline spread attribute
 </Component>
 ##expected
 @createElement(Component, @__spread({},  
-  x , {"a": (b)},  x , {"b": "c"}, z )
+  x , {"a": (b)},  x , {"b": @const("c")}, z )
 )
 ##end
 
@@ -591,10 +591,10 @@ multiline tag with spread attribute
 </Component>
 ##expected
 @createElement(Component, @__spread({ \
-  "z": "1"
+  "z": @const("1")
   }, x, { \
   "a": (b),  \
-  "b": "c"
+  "b": @const("c")
 })
 )
 ##end
@@ -613,9 +613,9 @@ multiline tag with spread attribute first
 @createElement(Component, @__spread({}, \
   
   x, { \
-  "z": "1",  \
+  "z": @const("1"),  \
   "a": (b),  \
-  "b": "c"
+  "b": @const("c")
 })
 )
 ##end
@@ -631,7 +631,7 @@ complex multiline spread attribute
 ##expected
 @createElement(Component, @__spread({}, \
   
-  y, {"a": (b)},  x , {"b": "c"}, z ),
+  y, {"a": (b)},  x , {"b": @const("c")}, z ),
   @createElement("div", {"code": (someFunc({a:{b:{}, C:'}'}}))})
 )
 ##end
@@ -641,7 +641,7 @@ self closing spread attribute on single line
 ##input
 <Component a="b" c="d" {...@props} />
 ##expected
-@createElement(Component, @__spread({"a": "b", "c": "d"}, @props ))
+@createElement(Component, @__spread({"a": @const("b"), "c": @const("d")}, @props ))
 ##end
 
 ##desc
@@ -654,8 +654,8 @@ self closing spread attribute on new line
 />
 ##expected
 @createElement(Component, @__spread({ \
-  "a": "b",  \
-  "c": "d"
+  "a": @const("b"),  \
+  "c": @const("d")
   }, @props
 ))
 ##end
@@ -669,8 +669,8 @@ self closing spread attribute on same line
   {...@props} />
 ##expected
 @createElement(Component, @__spread({ \
-  "a": "b",  \
-  "c": "d"
+  "a": @const("b"),  \
+  "c": @const("d")
   }, @props ))
 ##end
 
@@ -685,8 +685,8 @@ self closing spread attribute on next line
 />
 ##expected
 @createElement(Component, @__spread({ \
-  "a": "b",  \
-  "c": "d"
+  "a": @const("b"),  \
+  "c": @const("d")
   }, @props
 
 ))
@@ -698,8 +698,8 @@ Empty strings are not converted to true
 <Component val='' />
 <Component val="" />
 ##expected
-@createElement(Component, {"val": ''})
-@createElement(Component, {"val": ""})
+@createElement(Component, {"val": @const('')})
+@createElement(Component, {"val": @const("")})
 ##end
 
 ##desc
@@ -720,7 +720,7 @@ custom element
 ##input
 <paper-button className="button">{text}</paper-button>
 ##expected
-@createElement("paper-button", {"className": "button"}, (text))
+@createElement("paper-button", {"className": @const("button")}, (text))
 ##end
 
 ##desc
