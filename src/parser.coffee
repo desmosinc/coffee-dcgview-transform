@@ -64,16 +64,6 @@ module.exports = class Parser
     return 0 unless match = @chunk.match COMMENT
     [comment, here] = match
 
-    unless @cjsxPragmaChecked
-      @cjsxPragmaChecked = true
-      if pragmaMatch = comment.match PRAGMA
-        if pragmaMatch and pragmaMatch[1] and pragmaMatch[1].length
-          prefix = pragmaMatch[1]
-        else
-          prefix = 'React.DOM'
-        @addLeafNodeToActiveBranch ParseTreeLeafNode $.CJSX_PRAGMA, prefix
-        return comment.length
-
     @addLeafNodeToActiveBranch ParseTreeLeafNode $.CS_COMMENT, comment
     comment.length
 
@@ -421,8 +411,6 @@ TAG_ATTRIBUTES = ///
   | (?: \{\.\.\.(\s*?[^\s{}]+?\s*?)\} ) # spread attributes (captured)
   | ( [\s\n]+ ) # whitespace (captured)
 ///
-
-PRAGMA = /^\s*#\s*@cjsx\s+(\S*)/i
 
 CJSX_ESC_COMMENT = /^\{#(.*)\}/
 

@@ -300,34 +300,6 @@ multiline elements
   )
 ##end
 
-
-
-##desc
-pragma with alternate dom implementation
-##input
-# @cjsx awesome.dom
-<div> a
-  asf
-  <li xy={"as"}>{ n+1 }<a /> <a /> </li>
-</div>
-##expected
-`/** @jsx awesome.dom */`
-awesome.createElement("div", null, """ a
-  asf
-""", awesome.createElement("li", {"xy": ("as")}, ( n+1 ), awesome.createElement("a", null), " ", awesome.createElement("a", null), " ")
-)
-##end
-
-##desc
-pragma is case insensitive
-##input
-# @cJSX cool
-<div> a </div>
-##expected
-`/** @jsx cool */`
-cool.createElement("div", null, " a ")
-##end
-
 ##desc
 comment
 ##input
