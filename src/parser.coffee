@@ -416,7 +416,7 @@ TAG_ATTRIBUTES = ///
           (?: " ( (?: \\. | [^"] )* ) " ) # double quoted value (captured)
         | (?: ' ( (?: \\. | [^'] )* ) ' ) # single quoted value (captured)
         | (?: { ( (?: \\. | [\s\S] )* ) } ) # cjsx escaped expression (captured)
-        | (?: (\-? [0-9]+ \.? [0-9]* ) ) # bare value (numeric) (captured)
+        | (?: (\-? [0-9]* \.? [0-9]+ ) ) # bare value (numeric) (captured)
         | (?: ( true | false ) ) # bare value (boolean) (captured)
         | ( [^>\s]+ ) # invalid bare value (captured)
       )
