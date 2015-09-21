@@ -89,7 +89,7 @@ class Serialiser
 
     joinedAssigns = joinList(assignsWithWhitespace)
 
-    "@__spread(#{joinList(assignsWithWhitespace)})"
+    "DCGView.spread(#{joinList(assignsWithWhitespace)})"
 
   serialiseAttributePairs: (children) ->
     # whitespace (particularly newlines) must be maintained
