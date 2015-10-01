@@ -161,13 +161,13 @@ module.exports = class Parser
       if doubleQuotedVal? # "value"
         @addLeafNodeToActiveBranch ParseTreeBranchNode($.CJSX_ATTR_PAIR, null, [
           ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
-          ParseTreeLeafNode($.CJSX_ATTR_VAL, "@const(\"#{doubleQuotedVal}\")")
+          ParseTreeLeafNode($.CJSX_ATTR_VAL, "DCGView.const(\"#{doubleQuotedVal}\")")
         ])
         return input.length
       else if singleQuotedVal? # 'value'
         @addLeafNodeToActiveBranch ParseTreeBranchNode($.CJSX_ATTR_PAIR, null, [
           ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
-          ParseTreeLeafNode($.CJSX_ATTR_VAL, "@const('#{singleQuotedVal}')")
+          ParseTreeLeafNode($.CJSX_ATTR_VAL, "DCGView.const('#{singleQuotedVal}')")
         ])
         return input.length
       else if cjsxEscVal # {value}
@@ -178,13 +178,13 @@ module.exports = class Parser
       else if bareNumericVal # numeric value
         @addLeafNodeToActiveBranch ParseTreeBranchNode($.CJSX_ATTR_PAIR, null, [
           ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
-          ParseTreeLeafNode($.CJSX_ATTR_VAL, "@const(#{bareNumericVal})")
+          ParseTreeLeafNode($.CJSX_ATTR_VAL, "DCGView.const(#{bareNumericVal})")
         ])
         return input.length
       else if bareBooleanVal # numeric value
         @addLeafNodeToActiveBranch ParseTreeBranchNode($.CJSX_ATTR_PAIR, null, [
           ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
-          ParseTreeLeafNode($.CJSX_ATTR_VAL, "@const(#{bareBooleanVal})")
+          ParseTreeLeafNode($.CJSX_ATTR_VAL, "DCGView.const(#{bareBooleanVal})")
         ])
         return input.length
       else if invalidVal # non-whitelisted bare value
