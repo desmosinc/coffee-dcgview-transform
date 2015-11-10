@@ -168,7 +168,7 @@ nodeSerialisers =
       element = node.value
     else
       element = '"'+node.value+'"'
-    "DCGView.createElement(#{element}, #{joinList(serialisedChildren)})"
+    "@createElement(#{element}, #{joinList(serialisedChildren)})"
 
   CJSX_COMMENT: (node) ->
     ''
