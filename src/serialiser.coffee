@@ -229,7 +229,7 @@ nodeSerialisers =
         # escape string special chars except newlines
         # output to multiline string literal for line parity
         escapedText = stringEscape(entityDecode(trimmedText), preserveNewlines:  true)
-        '"""'+escapedText+'"""'
+        'DCGView.const("""'+escapedText+'""")'
 
     else
       if text == ''
@@ -237,7 +237,7 @@ nodeSerialisers =
       else
         # decode html entities to chars
         # escape string special chars
-        '"'+stringEscape(entityDecode(text))+'"'
+        'DCGView.const("'+stringEscape(entityDecode(text))+'")'
 
   CJSX_ATTR_KEY: genericLeafSerialiser
   CJSX_ATTR_VAL: genericLeafSerialiser
