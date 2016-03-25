@@ -159,6 +159,12 @@ module.exports = class Parser
 
     if attrName
       if doubleQuotedVal? # "value"
+
+        if doubleQuotedVal.indexOf('#{') != -1
+          throwSyntaxError \
+            "String interpolation not allowed in const text. Use a getter: #{input}",
+            first_line: @chunkLine, first_column: @chunkColumn
+
         @addLeafNodeToActiveBranch ParseTreeBranchNode($.CJSX_ATTR_PAIR, null, [
           ParseTreeLeafNode($.CJSX_ATTR_KEY, "\"#{attrName}\"")
           ParseTreeLeafNode($.CJSX_ATTR_VAL, "DCGView.const(\"#{doubleQuotedVal}\")")
